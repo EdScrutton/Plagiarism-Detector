@@ -12,10 +12,7 @@ def create_datatype(df, train_value, test_value, datatype_var, compare_dfcolumn,
     # 'compare_dfcolumn' 'operator_of_compare' 'value_of_compare'
     df_subset = df[operator_of_compare(df[compare_dfcolumn], value_of_compare)]
     df_subset = df_subset.drop(columns = [datatype_var])
-    
-    # Prints counts by task and compare_dfcolumn for subset df
-    #print("\nCounts by Task & " + compare_dfcolumn + ":\n", df_subset.groupby(['Task', compare_dfcolumn]).size().reset_index(name="Counts") )
-    
+        
     # Sets all datatype to value for training for df_subset
     df_subset.loc[:, datatype_var] = train_value
     
@@ -24,18 +21,13 @@ def create_datatype(df, train_value, test_value, datatype_var, compare_dfcolumn,
     df_sampled = df_sampled.drop(columns = [datatype_var])
     # Sets all datatype to value for test_value for df_sampled
     df_sampled.loc[:, datatype_var] = test_value
-    
-    # Prints counts by compare_dfcolumn for selected sample
-    #print("\nCounts by "+ compare_dfcolumn + ":\n", df_sampled.groupby([compare_dfcolumn]).size().reset_index(name="Counts") )
-    #print("\nSampled DF:\n",df_sampled)
-    
+        
     # Labels all datatype_var column as train_value which will be overwritten to 
     # test_value in next for loop for all test cases chosen with stratified sample
     for index in df_sampled.index: 
         # Labels all datatype_var columns with test_value for straified test sample
         df_subset.loc[index, datatype_var] = test_value
 
-    #print("\nSubset DF:\n",df_subset)
     # Adds test_value and train_value for all relevant data in main dataframe
     for index in df_subset.index:
         # Labels all datatype_var columns in df with train_value/test_value based upon 
@@ -65,9 +57,10 @@ def train_test_dataframe(clean_df, random_seed=100):
 
     return new_df
 
-
-# helper function for pre-processing text given a file
 def process_file(file):
+    
+    '''helper function for pre-processing text given a file'''
+    
     # put text in all lower case letters 
     all_text = file.read().lower()
 
@@ -83,6 +76,7 @@ def process_file(file):
 
 
 def create_text_column(df, file_directory='data/'):
+   
     '''Reads in the files, listed in a df and returns that df with an additional column, `Text`. 
        :param df: A dataframe of file information including a column for `File`
        :param file_directory: the main directory where files are stored
